@@ -1,0 +1,38 @@
+isNotDeletedSpecification – deleted = false bo‘lgan entitylarni tanlash.
+todo Ishlatiladi: findAll, findOne kabi querylarda soft-deleted entitylarni filterlash uchun.
+// BaseRepositoryImpl ichida:
+private val isNotDeletedSpecification = Specification<T> { root, _, cb ->
+    cb.equal(root.get<Boolean>("deleted"), false)
+}
+//  findAllNotDeleted method:
+todo override fun findAllNotDeleted(): List<T> = findAll(isNotDeletedSpecification)
+
+
+
+findByIdAndDeletedFalse – ID bo‘yicha entityni olish, agar deleted = true bo‘lsa null qaytaradi.
+todo Ishlatiladi: val product = repo.findByIdAndDeletedFalse(id)
+
+
+
+trash – Berilgan ID bo‘yicha entityni soft delete (deleted = true) qiladi.
+todo Ishlatiladi: repo.trash(id)
+
+
+
+trashList – Bir nechta entitylarni soft delete qiladi.
+todo Ishlatiladi: repo.trashList(listOf(id1, id2))
+
+
+
+findAllNotDeleted – Barcha deleted = false entitylarni olish.
+todo Ishlatiladi: val products = repo.findAllNotDeleted()
+
+
+
+findAllNotDeletedForPageable – Faol entitylarni pageable (paginated) olish.
+todo Ishlatiladi: val page = repo.findAllNotDeletedForPageable(pageable)
+
+
+
+saveAndRefresh – Entityni saqlash va darhol DB holati bilan refresh qilish.
+todo Ishlatiladi: val saved = repo.saveAndRefresh(entity)
