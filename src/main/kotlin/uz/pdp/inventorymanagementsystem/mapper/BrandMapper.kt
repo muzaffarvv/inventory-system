@@ -23,4 +23,8 @@ class BrandMapper : BaseMapper<Brand, BrandResponseDTO> {
             country = dto.country
         }
     }
+
+    fun toEntityList(dtos: List<BrandResponseDTO>): List<Brand> {
+        return dtos.map { toEntity(it) }
+    }
 }

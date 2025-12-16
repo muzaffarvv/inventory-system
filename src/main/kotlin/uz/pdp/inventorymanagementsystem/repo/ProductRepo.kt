@@ -14,8 +14,6 @@ interface ProductRepo : BaseRepo<Product> {
     override fun findById(id: UUID): Optional<Product?>
     override fun findAll(): List<Product>
 
-
-
     // -------------------------------
     // ID bo'yicha bitta product
     fun findActiveProductById(id: UUID): Product?

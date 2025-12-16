@@ -45,5 +45,5 @@ abstract class BaseModel {
     @Column(nullable = false)
     var deleted: Boolean = false
 
-
+    // var deletedAt: Instant? = null and deletedBy: Worker? = null can be added if needed
 }

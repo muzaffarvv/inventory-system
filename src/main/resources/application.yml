@@ -1,3 +1,56 @@
 spring:
   application:
     name: inventory-management-system
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventory_db
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+# JWT Configuration
+jwt:
+  secret: inventory-management-secret-key-jfsnawvebkjvwsd-sbdvsdbsvkjwiufweofhw-token
+  expiration: 3600000        # 1 hour in milliseconds
+  refreshExpirationMs: 86400000  # 24 hours (1 day)
+
+# File Upload
+file:
+  upload-dir: uploads/products
+
+# Logging
+logging:
+  level:
+    uz.pdp.inventorymanagementsystem: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha

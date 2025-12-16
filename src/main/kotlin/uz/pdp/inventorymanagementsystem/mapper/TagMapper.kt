@@ -22,4 +22,8 @@ class TagMapper : BaseMapper<Tag, TagResponseDTO> {
             name = dto.name
         }
     }
+
+    override fun toDTOList(entities: List<Tag>): List<TagResponseDTO> {
+        return entities.map { toDTO(it) }
+    }
 }
