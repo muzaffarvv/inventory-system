@@ -12,8 +12,6 @@ import java.nio.file.StandardCopyOption
 import java.util.UUID
 import java.time.Instant
 
-// todo use -- FILE_NOT_FOUND error
-
 @Service
 class FileStorageService(
     private val fileRepo: FileRepo,
@@ -38,7 +36,7 @@ class FileStorageService(
 
             val originalName = file.originalFilename ?: return@forEach
             val shortId = UUID.randomUUID().toString().replace("-", "").take(12)
-            //                                                      kamaytirish kerak edi ozgina ))
+            //                                                      kamaytirish kerak ✓
             val keyName = "${shortId}_$originalName"
 
             // Faylni papkaga saqlash
@@ -50,7 +48,7 @@ class FileStorageService(
                 orgName = originalName
                 this.keyName = keyName
                 size = file.size.toInt()
-                createdBy = employeeService.getActive(CurrentUser.id()) // 5050
+                createdBy = employeeService.getActive(CurrentUser.id()) // 50-50
                 createdAt = Instant.now()
 
             }

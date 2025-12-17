@@ -9,6 +9,6 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 @Table(name = "tags")
 class Tag : BaseModel() {
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     var name: String = ""
 }

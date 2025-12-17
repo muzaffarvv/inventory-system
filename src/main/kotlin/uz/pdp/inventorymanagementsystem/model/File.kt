@@ -8,7 +8,7 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 class File : BaseModel() {
 
     @Column(name = "org_name")
-    var orgName: String = ""   // Foydalanuvchi yuklagan asl fayl nomi
+    var orgName: String = ""
 
     @Column(name = "key_name")
     var keyName: String = ""   // Server/storage uchun unique identifikator

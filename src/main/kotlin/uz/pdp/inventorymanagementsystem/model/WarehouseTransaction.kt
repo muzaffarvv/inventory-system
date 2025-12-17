@@ -30,6 +30,6 @@ class WarehouseTransaction : BaseModel() {
     )
     var items: MutableList<WarehouseItem> = mutableListOf()
 
-    @Column(nullable = false, unique = true, length = 100)
-    var factoryNumber: String = "" // faktura / hujjat raqami
+    @Column(nullable = false, unique = true, length = 30)
+    var factoryNumber: String = ""
 }

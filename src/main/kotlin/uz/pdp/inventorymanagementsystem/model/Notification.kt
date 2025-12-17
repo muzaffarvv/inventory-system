@@ -14,7 +14,7 @@ class Notification : BaseModel() {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_item_id", nullable = false)
-    lateinit var warehouseItem: WarehouseItem  // Kirim qatori bilan bog'langan
+    lateinit var warehouseItem: WarehouseItem
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", nullable = false)

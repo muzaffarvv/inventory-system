@@ -9,7 +9,7 @@ import kotlin.collections.HashSet
 @Table(name = "products")
 class Product : BaseModel() {  // yaroqlilik muddati qo'shish kerak
 
-    @Column(nullable = false, length = 125)
+    @Column(nullable = false, unique = true, length = 125)
     var name: String = ""                         // Mahsulot nomi
 
     @Column

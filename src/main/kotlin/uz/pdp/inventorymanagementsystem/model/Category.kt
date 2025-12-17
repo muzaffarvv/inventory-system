@@ -7,7 +7,7 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 @Table(name = "categories")
 class Category : BaseModel() {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 50)
     var name: String = ""
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -10,9 +10,6 @@ class AuthPermissionService(
     private val repository: AuthPermissionRepo
 ) {
 
-    /**
-     * Permission mavjud bo'lmasa yaratadi
-     */
     fun createIfNotExists(name: String, code: String?) {
         val finalCode = code?.takeIf { it.isNotBlank() } ?: generateCode(name)
 

@@ -14,7 +14,7 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 )
 class Warehouse : BaseModel() {
 
-    @Column(nullable = false, length = 75)
+    @Column(nullable = false, unique = true, length = 75)
     var name: String = ""
 
     @Column(length = 255)

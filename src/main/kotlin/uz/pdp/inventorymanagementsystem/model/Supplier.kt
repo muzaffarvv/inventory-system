@@ -10,7 +10,7 @@ class Supplier : BaseModel() {
     @Column(nullable = false)
     var about: String = ""
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     var phone: String = ""
 
     @ManyToOne(fetch = FetchType.LAZY)
