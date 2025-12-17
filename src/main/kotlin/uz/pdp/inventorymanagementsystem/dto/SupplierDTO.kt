@@ -4,19 +4,22 @@ import uz.pdp.inventorymanagementsystem.base.BaseDTO
 import java.util.UUID
 
 data class SupplierResponseDTO(
-    var name: String = "",
+    var about: String = "",
     var phone: String = "",
-    var brands: Set<BrandResponseDTO> = emptySet()
+    var brand: BrandResponseDTO?,
+    val warehouse: WarehouseResponseDTO?
 ) : BaseDTO()
 
 data class SupplierCreateDTO(
-    var name: String,
+    var about: String,
     var phone: String,
-    var brandIds: Set<UUID> = emptySet()
+    var brandId: UUID,
+    var warehouseId: UUID
 )
 
 data class SupplierUpdateDTO(
-    var name: String? = null,
+    var about: String? = null,
     var phone: String? = null,
-    var brandIds: Set<UUID>? = null
+    var brandId: UUID? = null,
+    var warehouseId: UUID? = null
 )

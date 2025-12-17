@@ -15,14 +15,15 @@ class Product : BaseModel() {  // yaroqlilik muddati qo'shish kerak
     @Column
     var description: String = ""                  // Tavsif
 
-    @Column
-    var weight: Double? = null                    // Og'irlik
-
     @Column(nullable = false)
     var price: BigDecimal = BigDecimal.ZERO       // Narx (default 0)
 
     @Column
     var profit: Int? = null                       // Foyda
+
+
+    @Column(unique = true, nullable = false, length = 30)
+    var productCode: String = ""                  // Takrorlanmas mahsulot raqami
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
@@ -44,10 +45,4 @@ class Product : BaseModel() {  // yaroqlilik muddati qo'shish kerak
     @JoinColumn(name = "uom_id")
     var uom: UoM? = null                          // Unit of Measurement
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id")
-    var currency: Currency? = null                // Valyuta
-
-    @Column(unique = true, nullable = false)
-    var productCode: String = ""                  // Takrorlanmas mahsulot raqami
 }

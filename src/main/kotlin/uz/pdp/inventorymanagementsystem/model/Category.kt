@@ -10,12 +10,10 @@ class Category : BaseModel() {
     @Column(nullable = false)
     var name: String = ""
 
-    // Parent category
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     var parent: Category? = null
 
-    // Children categories
     @OneToMany(
         mappedBy = "parent",
         fetch = FetchType.LAZY,
@@ -23,4 +21,8 @@ class Category : BaseModel() {
         orphanRemoval = true
     )
     var children: MutableList<Category> = ArrayList()
+
+    @Column(name = "is_last", nullable = false)
+    var isLast: Boolean = true // default true
 }
+

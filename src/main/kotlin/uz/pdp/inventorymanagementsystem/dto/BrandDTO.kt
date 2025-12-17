@@ -4,7 +4,8 @@ import uz.pdp.inventorymanagementsystem.base.BaseDTO
 
 data class BrandResponseDTO(
     var name: String = "",
-    var country: String = ""
+    var country: String = "",
+    val suppliers: Set<SupplierResponseDTO>
 ) : BaseDTO()
 
 data class BrandCreateDTO(

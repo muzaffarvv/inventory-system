@@ -1,12 +1,6 @@
 package uz.pdp.inventorymanagementsystem.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import uz.pdp.inventorymanagementsystem.base.BaseModel
 
 @Entity
@@ -14,16 +8,16 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 class Supplier : BaseModel() {
 
     @Column(nullable = false)
-    var name: String = ""
+    var about: String = ""
 
     @Column(nullable = false, length = 20)
     var phone: String = ""
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "supplier_brands",
-        joinColumns = [JoinColumn(name = "supplier_id")],
-        inverseJoinColumns = [JoinColumn(name = "brand_id")]
-    )
-    var brands: MutableSet<Brand> = HashSet()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    var brand: Brand? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouse_id")
+    var warehouse: Warehouse? = null
 }

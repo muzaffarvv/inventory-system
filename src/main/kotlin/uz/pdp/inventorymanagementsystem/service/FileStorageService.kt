@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.beans.factory.annotation.Value
 import uz.pdp.inventorymanagementsystem.model.File
 import uz.pdp.inventorymanagementsystem.repo.FileRepo
-import uz.pdp.inventorymanagementsystem.util.CurrentUser
+import uz.pdp.inventorymanagementsystem.utils.CurrentUser
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
@@ -16,17 +16,16 @@ import java.time.Instant
 
 @Service
 class FileStorageService(
-    private val fileRepo: FileRepo
+    private val fileRepo: FileRepo,
+    private val employeeService: EmployeeService
 ) {
 
     @Value("\${file.upload-dir}")
     private lateinit var uploadDir: String
 
-    /**
-     * SAVE multiple files
-     * Faylni diskga saqlaydi va DBga yozadi
-     * KeyName: unikal nom (UUID + originalName)
-     */
+    // SAVE multiple files, Faylni diskga saqlaydi va DBga yozadi
+    // KeyName: unikal nom (UUID + originalName) 12 taga qirqardi
+
     fun save(files: List<MultipartFile>): List<File> {
         val savedFiles = mutableListOf<File>()
         if (files.isEmpty()) return savedFiles
@@ -38,7 +37,9 @@ class FileStorageService(
             if (file.isEmpty) return@forEach
 
             val originalName = file.originalFilename ?: return@forEach
-            val keyName = "${UUID.randomUUID()}_$originalName" // unikal fayl nomi
+            val shortId = UUID.randomUUID().toString().replace("-", "").take(12)
+            //                                                      kamaytirish kerak edi ozgina ))
+            val keyName = "${shortId}_$originalName"
 
             // Faylni papkaga saqlash
             val target = uploadPath.resolve(keyName)
@@ -49,7 +50,7 @@ class FileStorageService(
                 orgName = originalName
                 this.keyName = keyName
                 size = file.size.toInt()
-                createdBy = CurrentUser.get() // kim yukladi
+                createdBy = employeeService.getActive(CurrentUser.id()) // 5050
                 createdAt = Instant.now()
 
             }

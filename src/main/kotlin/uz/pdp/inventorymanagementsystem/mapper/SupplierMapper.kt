@@ -1,32 +1,39 @@
 package uz.pdp.inventorymanagementsystem.mapper
 
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import uz.pdp.inventorymanagementsystem.base.BaseMapper
 import uz.pdp.inventorymanagementsystem.dto.SupplierCreateDTO
 import uz.pdp.inventorymanagementsystem.dto.SupplierResponseDTO
 import uz.pdp.inventorymanagementsystem.model.Brand
 import uz.pdp.inventorymanagementsystem.model.Supplier
+import uz.pdp.inventorymanagementsystem.model.Warehouse
 
 @Component
 class SupplierMapper(
-    private val brandMapper: BrandMapper
+    @Lazy
+    private val brandMapper: BrandMapper,
+    @Lazy private val warehouseMapper: WarehouseMapper
 ) : BaseMapper<Supplier, SupplierResponseDTO> {
 
     override fun toDTO(entity: Supplier): SupplierResponseDTO {
         return SupplierResponseDTO(
-            name = entity.name,
+            about = entity.about,
             phone = entity.phone,
-            brands = entity.brands.map { brandMapper.toDTO(it) }.toSet()
+            brand = entity.brand?.let { brandMapper.toDTO(it) },
+            warehouse = entity.warehouse?.let { warehouseMapper.toDTO(it) }
+
         ).apply {
             mapBaseFields(entity, this)
         }
     }
 
-    fun toEntity(dto: SupplierCreateDTO, brands: Set<Brand>): Supplier {
+    fun toEntity(dto: SupplierCreateDTO, brand: Brand, warehouse: Warehouse): Supplier {
         return Supplier().apply {
-            name = dto.name
+            about = dto.about
             phone = dto.phone
-            this.brands = brands.toMutableSet()
+            this.brand = brand
+            this.warehouse = warehouse
         }
     }
 }

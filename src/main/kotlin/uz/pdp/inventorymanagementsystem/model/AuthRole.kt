@@ -5,7 +5,7 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 
 @Entity
 @Table(name = "roles")
-class AuthRole : BaseModel() {
+class AuthRole(name1: String, code1: String, permissions1: Set<Unit>) : BaseModel() {
 
     @Column(nullable = false, unique = true, length = 50)
     var code: String = ""        // unique code, masalan "ADMIN"

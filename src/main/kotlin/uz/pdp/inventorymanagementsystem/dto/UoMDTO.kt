@@ -1,6 +1,7 @@
 package uz.pdp.inventorymanagementsystem.dto
 
 import uz.pdp.inventorymanagementsystem.base.BaseDTO
+import java.time.Instant
 
 data class UoMResponseDTO(
     var code: String = "",
@@ -14,5 +15,6 @@ data class UoMCreateDTO(
 
 data class UoMUpdateDTO(
     var code: String? = null,
-    var name: String? = null
+    var name: String? = null,
+    var updatedAt: Instant
 )

@@ -54,3 +54,8 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha
+
+
+    spring:
+      main:
+        allow-bean-definition-overriding: true

@@ -5,5 +5,7 @@ import uz.pdp.inventorymanagementsystem.model.Tag
 
 interface TagRepo : BaseRepo<Tag> {
     fun existsByNameAndDeletedFalse (name: String): Boolean
+    fun findByName(name: String): Tag?
+
     fun findByNameAndDeletedFalse(name: String): Tag?
 }

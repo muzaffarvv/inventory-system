@@ -22,7 +22,7 @@ data class WarehouseItemCreateDTO(
 )
 
 data class WarehouseItemUpdateDTO(
-    var productId: Long? = null,
+    var productId: UUID? = null,
     var quantity: BigDecimal? = null,
     var unitPrice: BigDecimal? = null,
     var expireAt: Instant? = null

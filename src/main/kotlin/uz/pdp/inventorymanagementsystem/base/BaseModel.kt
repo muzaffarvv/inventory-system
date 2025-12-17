@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import uz.pdp.inventorymanagementsystem.enums.Status
-import uz.pdp.inventorymanagementsystem.model.Worker
+import uz.pdp.inventorymanagementsystem.model.Employee
 import java.time.Instant
 import java.util.*
 
@@ -23,7 +23,7 @@ abstract class BaseModel {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    lateinit var createdBy: Worker
+    lateinit var createdBy: Employee
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -32,7 +32,7 @@ abstract class BaseModel {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    lateinit var updatedBy: Worker
+    lateinit var updatedBy: Employee
 
     @LastModifiedDate
     @Column(name = "updated_at")

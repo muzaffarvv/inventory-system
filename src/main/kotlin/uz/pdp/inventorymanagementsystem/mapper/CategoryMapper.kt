@@ -24,6 +24,7 @@ class CategoryMapper : BaseMapper<Category, CategoryResponseDTO> {
         return Category().apply {
             name = dto.name
             this.parent = parent
+            isLast = dto.isLast
         }
     }
 }

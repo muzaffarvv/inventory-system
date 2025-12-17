@@ -8,35 +8,16 @@ import java.util.UUID
 
 @Repository
 interface ProductRepo : BaseRepo<Product> {
-    // name, code, id boyicha tekshiruv uchun kerak
-    fun findByName(name: String): Product?
-    fun findByCode(code: String): Product?
+
     override fun findById(id: UUID): Optional<Product?>
     override fun findAll(): List<Product>
 
-    // -------------------------------
-    // ID bo'yicha bitta product
-    fun findActiveProductById(id: UUID): Product?
-    fun findNonActiveProductById(id: UUID): Product?
-    fun findDeletedProductById(id: UUID): Product?
+    fun findTopByOrderByCreatedAtDesc(): Product?
 
-    // -------------------------------
-    // Name bo'yicha bitta product
-    fun findActiveProductByName(name: String): Product?
-    fun findNonActiveProductByName(name: String): Product?
-    fun findDeletedProductByName(name: String): Product?
 
-    // -------------------------------
-    // Barcha productlar
-    fun findAllActive(): List<Product>
-    fun findAllNonActive(): List<Product>
-    fun findAllDeleted(): List<Product>
-    fun findAllActiveAndNonDeleted(): List<Product>
-    fun findAllNonActiveAndNonDeleted(): List<Product>
+    fun findByNameAndDeletedFalse(name: String): Product?
 
-    // -------------------------------
-    // Name orqali mavjudligini tekshirish
-    fun existsActiveProductByName(name: String): Boolean
-    fun existsNonActiveProductByName(name: String): Boolean
+    fun findAllByDeletedFalse(): Set<Product>
+
 
 }
