@@ -2,8 +2,6 @@ package uz.pdp.inventorymanagementsystem.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -21,33 +19,28 @@ class SecurityConfig(
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationManager(http: HttpSecurity): AuthenticationManager {
-        return http.getSharedObject(AuthenticationManagerBuilder::class.java)
-            .userDetailsService(customUserDetailsService)
-            .passwordEncoder(passwordEncoder())
-            .and()
-            .build()
-    }
-
-    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .authorizeHttpRequests { auth ->
-                auth.requestMatchers(
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html"
-                ).permitAll()
-                auth.requestMatchers("/api/v1/warehouse-items/**").hasAuthority("READ_WAREHOUSE")
-                auth.requestMatchers("/api/v1/warehouse-transactions/**")
-                    .hasAnyAuthority("READ_WAREHOUSE", "MANAGE_WAREHOUSE")
-                auth.requestMatchers("/api/v1/**").authenticated()
-            }
+            .csrf { it.disable() }
+
             .sessionManagement { session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
 
+            .authorizeHttpRequests { auth ->
+                auth.requestMatchers(
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-ui/index.html",
+                    "/swagger-ui/**/webjars/**"
+                ).permitAll()
+
+                auth.requestMatchers("/api/v1/warehouse-items/**")
+                auth.requestMatchers("/api/v1/warehouse-transactions/**")
+                auth.requestMatchers("/api/v1/**").authenticated()
+            }
+
         return http.build()
     }
-
 }
