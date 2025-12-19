@@ -93,7 +93,7 @@ class WarehouseTransactionService(
     @Transactional
     fun delete(id: UUID) {
         getByIdOrThrow(id)
-        validateDelete(id) // Kelajakda locked transaction uchun qoida qo‘shish mumkin
+       // validateDelete(id)  qoida qo‘shish mumkin
         repository.trash(id)
     }
 
@@ -153,9 +153,5 @@ class WarehouseTransactionService(
         }
 
         if (errors.isNotEmpty()) throw ValidationException(errors)
-    }
-
-    private fun validateDelete(id: UUID) {
-        // Future: locked transaction uchun o‘chirishni taqiqlash mumkin
     }
 }

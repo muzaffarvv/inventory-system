@@ -17,10 +17,10 @@ class Warehouse : BaseModel() {
     @Column(nullable = false, unique = true, length = 75)
     var name: String = ""
 
-    @Column(length = 255)
-    var address: String? = null
+    @Column(length = 100, unique = true)
+    var address: String? = null // aniq manzil
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, unique = true, length = 15)
     var code: String = ""
 
     @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY)

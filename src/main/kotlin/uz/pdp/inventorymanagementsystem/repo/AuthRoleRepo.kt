@@ -8,6 +8,6 @@ interface AuthRoleRepo : BaseRepo<AuthRole>{
 
     fun existsByCodeAndDeletedFalse(code: String) : Boolean
 
-    fun findByCode(code: String): AuthRole?
+    fun findByCodeAndDeletedFalse(code: String): AuthRole?
     override fun findByIdAndDeletedFalse(id: UUID): AuthRole?
 }

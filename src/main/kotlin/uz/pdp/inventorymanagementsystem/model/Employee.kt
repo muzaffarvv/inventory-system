@@ -19,7 +19,7 @@ class Employee : BaseModel() {
     @Column(nullable = false, unique = true, length = 50)
     var employeeCode: String = ""   // tizim generatsiya qiladi
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 75)
     var password: String = ""
 
     @ManyToOne(fetch = FetchType.LAZY)

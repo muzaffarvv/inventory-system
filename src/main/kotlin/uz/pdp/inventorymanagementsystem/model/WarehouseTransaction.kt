@@ -12,7 +12,6 @@ class WarehouseTransaction : BaseModel() {
     @Column(nullable = false)
     var date: LocalDate = LocalDate.now()
 
-    @Column(length = 255)
     var description: String? = null
 
     @Enumerated(EnumType.STRING)

@@ -28,7 +28,7 @@ class EmployeeService(
         EmployeeRepo
         >(repository, mapper) {
 
-    /* ===================== CREATE ===================== */
+    /* ===================== CRUD ===================== */
     override fun create(dto: EmployeeCreateDTO): EmployeeResponseDTO {
         validateCreate(dto)
 
@@ -38,13 +38,11 @@ class EmployeeService(
         return mapper.toDTO(saved)
     }
 
-    /* ===================== GET BY ID ===================== */
     override fun getById(id: UUID): EmployeeResponseDTO {
         val entity = getByIdOrThrow(id)
         return mapper.toDTO(entity)
     }
 
-    /* ===================== UPDATE ===================== */
     override fun update(id: UUID, dto: EmployeeUpdateDTO): EmployeeResponseDTO {
         val entity = getByIdOrThrow(id)
 
@@ -56,15 +54,21 @@ class EmployeeService(
         return mapper.toDTO(updated)
     }
 
-    /* ===================== DELETE ===================== */
     override fun delete(id: UUID) {
         val entity = getByIdOrThrow(id)
-        validateDelete(id)
+      //  validateDelete(id)
         entity.deleted = true
         saveAndRefresh(entity)
     }
 
     /* ===================== HELPERS ===================== */
+
+    fun getByWarehouseId(warehouseId: UUID): Set<EmployeeResponseDTO> =
+        repository.findAllByDeletedFalse() // for auditing (with inactive)
+            .filter { it.warehouse.id == warehouseId }
+            .map(mapper::toDTO)
+            .toSet()
+
     fun getByIdOrThrow(id: UUID): Employee =
         getEntityOrNull(id) ?: throw ValidationException(
             mapOf("employee" to "Employee with id '$id' not found")
@@ -77,12 +81,6 @@ class EmployeeService(
             )
         }
 
-    fun getByWarehouseId(warehouseId: UUID): Set<EmployeeResponseDTO> =
-        repository.findAllByDeletedFalse()
-            .filter { it.warehouse.id == warehouseId }
-            .map(mapper::toDTO)
-            .toSet()
-
     private fun getCodeLastNumber(): Int {
         // Oxirgi code ni olish, masalan "EMP-0001"
         val lastCode = repository.findTopByOrderByCreatedAtDesc()?.employeeCode ?: return 0
@@ -92,11 +90,6 @@ class EmployeeService(
     /* ===================== MAPPING ===================== */
     override fun convertCreateDtoToEntity(dto: EmployeeCreateDTO): Employee {
         val errors = mutableMapOf<String, String>()
-
-        // Phone uniqueness check
-        if (repository.existsByPhoneAndDeletedFalse(dto.phone)) {
-            errors["phone"] = "Employee with phone '${dto.phone}' already exists"
-        }
 
         val warehouse = try {
             warehouseService.getActive(dto.warehouseId)
@@ -120,12 +113,7 @@ class EmployeeService(
     override fun updateEntityFromDto(entity: Employee, dto: EmployeeUpdateDTO) {
         dto.firstName?.let { entity.firstName = it }
         dto.lastName?.let { entity.lastName = it }
-        dto.phone?.let {
-            if (repository.findByPhone(it)?.id != entity.id) {
-                throw ValidationException(mapOf("phone" to "Employee with phone '$it' already exists"))
-            }
-            entity.phone = it
-        }
+        dto.phone?.let { entity.phone = it }
         dto.password?.let { entity.password = it }
         dto.warehouseId?.let { entity.warehouse = warehouseService.getActive(it) }
 
@@ -159,12 +147,5 @@ class EmployeeService(
         }
 
         if (errors.isNotEmpty()) throw ValidationException(errors)
-    }
-
-    override fun validateDelete(id: UUID) {
-        val entity = getByIdOrThrow(id)
-        if (entity.deleted) throw ValidationException(
-            mapOf("employee" to "Employee with id '$id' is already deleted")
-        )
     }
 }

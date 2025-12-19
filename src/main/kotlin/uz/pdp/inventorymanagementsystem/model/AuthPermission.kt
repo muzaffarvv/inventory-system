@@ -5,11 +5,12 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 
 @Entity
 @Table(name = "permissions")
-class AuthPermission(code: String, name: String) : BaseModel() {
+class AuthPermission : BaseModel() {
 
     @Column(nullable = false, unique = true, length = 75)
-    var code: String = ""        // unique code, masalan "READ_USERS"
+    var code: String = ""
 
     @Column(nullable = false, length = 75)
-    var name: String = ""        // display nom, masalan "Read Users"
+    var name: String = ""
 }
+

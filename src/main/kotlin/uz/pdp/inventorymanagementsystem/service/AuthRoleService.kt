@@ -2,6 +2,7 @@ package uz.pdp.inventorymanagementsystem.service
 
 import org.springframework.stereotype.Service
 import uz.pdp.inventorymanagementsystem.exception.RoleNotFoundException
+import uz.pdp.inventorymanagementsystem.model.AuthPermission
 import uz.pdp.inventorymanagementsystem.model.AuthRole
 import uz.pdp.inventorymanagementsystem.repo.AuthRoleRepo
 
@@ -13,26 +14,23 @@ class AuthRoleService(
     fun createIfNotExists(
         name: String,
         code: String,
-        permissions: Set<Unit> = emptySet()
+        permissions: Set<AuthPermission> = emptySet()
     ): AuthRole {
-        require(code.isNotBlank()) { "Role code must not be blank" }
 
-        return roleRepo.findByCode(code)
+        return roleRepo.findByCodeAndDeletedFalse(code)
             ?: roleRepo.save(
-                AuthRole(
-                    name1 = "name1",
-                    code1 = "code1",
-                    permissions1 = mutableSetOf()
-                ).apply {
+                AuthRole().apply {
                     this.name = name
                     this.code = code
-                    this.permissions = permissions.toMutableSet()
+                    this.permissions.addAll(permissions)
                 }
             )
     }
 
     fun getByCode(code: String): AuthRole {
-        return roleRepo.findByCode(code)
-            ?: throw RoleNotFoundException("Role not found: $code")
+        return roleRepo.findByCodeAndDeletedFalse(code)
+            ?: throw RoleNotFoundException("Role not found with code: $code")
     }
+
 }
+

@@ -11,6 +11,8 @@ import uz.pdp.inventorymanagementsystem.service.AuthRoleService
 import uz.pdp.inventorymanagementsystem.repo.EmployeeRepo
 import uz.pdp.inventorymanagementsystem.repo.WarehouseRepo
 import org.slf4j.LoggerFactory
+import uz.pdp.inventorymanagementsystem.enums.Status
+import uz.pdp.inventorymanagementsystem.model.Warehouse
 
 @Configuration
 class DataLoader {
@@ -27,49 +29,50 @@ class DataLoader {
         passwordEncoder: PasswordEncoder
     ) = CommandLineRunner {
 
-        log.info("Initializing default permissions, roles, and admin user...")
+        log.info("Starting DataLoader...")
 
-        // ===================== Permissions =====================
+        // ===== PERMISSIONS =====
         val readUsers = permissionService.createIfNotExists("Read users", "READ_USERS")
         val createProduct = permissionService.createIfNotExists("Create product", "CREATE_PRODUCT")
         val manageWarehouse = permissionService.createIfNotExists("Manage warehouse", "MANAGE_WAREHOUSE")
         val adminPermission = permissionService.createIfNotExists("Admin permission", "ADMIN_PERMISSION")
 
-        // ===================== Roles =====================
+        // ===== ROLE =====
         val adminRole = roleService.createIfNotExists(
             name = "Administrator",
             code = "ADMIN",
             permissions = setOf(readUsers, createProduct, manageWarehouse, adminPermission)
         )
 
-        val userRole = roleService.createIfNotExists(
-            name = "User",
-            code = "USER",
-            permissions = setOf(readUsers)
-        )
+        // ===== WAREHOUSE (AUTO CREATE) =====
+        val warehouse = warehouseRepo.findTopByOrderByCreatedAtDesc()
+            ?: warehouseRepo.save(
+                Warehouse().apply {
+                    name = "Main Warehouse"
+                    code = "WH-001"
+                    status = Status.ACTIVE
+                    deleted = false
+                }
+            )
 
-        // ===================== Default ADMIN Employee =====================
-        val defaultAdminPhone = "+998900000000"
-        if (employeeRepo.findByPhone(defaultAdminPhone) == null) {
-            val warehouse = warehouseRepo.findTopByOrderByCreatedAtDesc()
-                ?: throw IllegalStateException("Warehouse not found for default admin")
-
+        // ===== ADMIN EMPLOYEE =====
+        if (employeeRepo.findByPhone("+998900000000") == null) {
             employeeRepo.save(
                 Employee().apply {
                     firstName = "System"
                     lastName = "Admin"
-                    phone = defaultAdminPhone
+                    phone = "+998900000000"
                     employeeCode = "EMP-001"
                     password = passwordEncoder.encode("admin123")
                     this.warehouse = warehouse
                     roles = mutableSetOf(adminRole)
                 }
             )
-            log.info("Default ADMIN user created with phone $defaultAdminPhone")
+            log.info("Default ADMIN employee created")
         } else {
-            log.info("Default ADMIN user already exists")
+            log.info("Admin employee already exists")
         }
 
-        log.info("DataLoader initialization complete")
+        log.info("DataLoader finished successfully")
     }
 }

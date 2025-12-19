@@ -24,5 +24,5 @@ class Notification : BaseModel() {
     var alertBeforeDays: Int = 3               // Admin belgilaydi
 
     @Column(length = 255)
-    var message: String? = null                // yuborilgan xabar matni yoki kam qolganligi haqida eslatma qilinadi
+    var message: String? = null
 }

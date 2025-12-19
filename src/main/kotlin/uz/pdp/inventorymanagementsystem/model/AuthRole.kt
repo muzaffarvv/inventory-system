@@ -5,13 +5,13 @@ import uz.pdp.inventorymanagementsystem.base.BaseModel
 
 @Entity
 @Table(name = "roles")
-class AuthRole(name1: String, code1: String, permissions1: Set<Unit>) : BaseModel() {
+class AuthRole : BaseModel() {
 
     @Column(nullable = false, unique = true, length = 50)
-    var code: String = ""        // unique code, masalan "ADMIN"
+    var code: String = ""
 
     @Column(nullable = false, length = 75)
-    var name: String = ""        // display nom, masalan "Administrator"
+    var name: String = ""
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -19,5 +19,6 @@ class AuthRole(name1: String, code1: String, permissions1: Set<Unit>) : BaseMode
         joinColumns = [JoinColumn(name = "role_id")],
         inverseJoinColumns = [JoinColumn(name = "permission_id")]
     )
-    var permissions: MutableSet<AuthPermission> = HashSet()
+    var permissions: MutableSet<AuthPermission> = hashSetOf()
 }
+

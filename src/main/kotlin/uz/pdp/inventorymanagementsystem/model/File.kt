@@ -11,7 +11,7 @@ class File : BaseModel() {
     var orgName: String = ""
 
     @Column(name = "key_name")
-    var keyName: String = ""   // Server/storage uchun unique identifikator
+    var keyName: String = ""   // Server/storage uchun key name
 
     @Column(name = "size")
     var size: Int = 0
