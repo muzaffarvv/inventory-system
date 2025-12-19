@@ -1,5 +1,6 @@
 package uz.pdp.inventorymanagementsystem.service
 
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import uz.pdp.inventorymanagementsystem.base.BaseServiceImpl
 import uz.pdp.inventorymanagementsystem.dto.EmployeeCreateDTO
@@ -18,7 +19,8 @@ class EmployeeService(
     override val repository: EmployeeRepo,
     override val mapper: EmployeeMapper,
     private val warehouseService: WarehouseService,
-    private val authRoleService: AuthRoleService
+    private val authRoleService: AuthRoleService,
+    private val passwordEncoder: PasswordEncoder
 ) : BaseServiceImpl<
         Employee,
         EmployeeCreateDTO,
@@ -104,7 +106,7 @@ class EmployeeService(
             firstName = dto.firstName
             lastName = dto.lastName
             phone = dto.phone
-            password = dto.password
+            password = passwordEncoder.encode(dto.password)
             this.warehouse = warehouse
             employeeCode = CodeGenerator.forEmployee(getCodeLastNumber())
         }
